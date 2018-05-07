@@ -8,7 +8,7 @@ __author__ = "lovefox"
 1.2、保存cookies到文本文件
 
 2、从ETC按结算日期获取通行记录,并按xxxx-xx.json的格式文件名保存
-3、从票根网获取通行记录
+3、从票根网获取通行记录。
 """
 import os
 import sys
