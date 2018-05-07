@@ -472,8 +472,7 @@ class APIHandler(BaseHandler):
                 page_num += 1
                 continue
             for cardid, car_num in self.__get_query_cardid(html):
-                if car_num == "闽AC6970":
-                    self.inv_download(cardid, month, car_num, save_path)
+                self.inv_download(cardid, month, car_num, save_path)
             if not self.__has_next_page(etree.HTML(html)):
                 break
             page_num += 1
