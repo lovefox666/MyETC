@@ -26,10 +26,12 @@ from com.getCookie import Getcookies
 from com import myUtils
 
 #0.开始运行程序
+"""
 with open("welcome.txt","r", encoding="utf-8") as f:
     welcome = f.read()
     print(welcome)
-
+"""
+print("欢迎使用小锦的ETC自助程序。")
 userinput = input("是否开始运行“车辆费用自动结算收集”程序？（Y/N）：")
 if userinput.upper() == "N":
     print("程序退出。谢谢使用。")
