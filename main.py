@@ -78,11 +78,12 @@ else:
     sys.exit()
 
 #3.登录票根网，获取开票信息
+#3.1获取下txffp的cookie
+Getcookies.getCookieTotxt('%pss.txffp.com','cookie.txt')
+event_handler = txffpOperate.APIHandler(txffpOperate.COOKIE, txffpOperate.HEADERS, req_sleep=5)
 userinput = input("请登录票根网（www.txffp.com）。完成后，请输入“Y”；跳过，请输入“N”：")
 if userinput.upper() == "Y":
-    #3.1获取下txffp的cookie
-    Getcookies.getCookieTotxt('%pss.txffp.com','cookie.txt')
-    event_handler = txffpOperate.APIHandler(txffpOperate.COOKIE, txffpOperate.HEADERS, req_sleep=5)
+    
     #3.2开票申请。应查询上月，并开票"""
     print("开始申请%s开票，请耐心等待....." % (lastMonth))
     event_handler.submit_apply_all(lastMonth)
