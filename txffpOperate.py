@@ -234,7 +234,7 @@ class APIHandler(BaseHandler):
 
     def api_inv_manage(self, id, month, page_num=1, tradeid_list="", title_id="", invoice_mail="", user_type=""):
         """
-        函数功能：获取卡，某个月的通行记录??
+        函数功能：获取卡，某个月的通行记录
         """
         data = {
             "id": id,
@@ -281,8 +281,9 @@ class APIHandler(BaseHandler):
             data=data,
             **self.APIS["inv_apply"],
         )
-    #提交开票数据
+    
     def api_inv_subapply(self, apply_id, id, user_type="COMPANY"):
+        """提交开票数据"""
         data = {
             "applyId": apply_id,
             "id": id,
@@ -301,8 +302,9 @@ class APIHandler(BaseHandler):
             data=data,
             **self.APIS["inv_subapply"],
         )
-    """获取开票页，卡列表"""
+    
     def api_card_list(self, page_num=1, user_type="COMPANY", type="invoiceApply", change_view="card", query_str=""):
+        """获取开票页，卡列表"""
         data = {
             "userType": user_type,
             "type": type,
@@ -413,8 +415,9 @@ class APIHandler(BaseHandler):
             page_num += 1
             if page_num >= self.MAX_PAGE_NUM:
                 break
-    """提交开票信息"""
+    
     def submit_apply_all(self, month, invoice_mail="", *args, **kwargs):
+        """提交开票信息"""
         page_num = 1
 
         while True:
@@ -437,6 +440,7 @@ class APIHandler(BaseHandler):
                 break
 
     def inv_download(self, cardid, month, car_num, save_path, page_size=6):
+        """函数功能：从票根网下载发票"""
         page_num = 1
 
         while True:
@@ -468,7 +472,8 @@ class APIHandler(BaseHandler):
                 page_num += 1
                 continue
             for cardid, car_num in self.__get_query_cardid(html):
-                self.inv_download(cardid, month, car_num, save_path)
+                if car_num == "闽AC6970":
+                    self.inv_download(cardid, month, car_num, save_path)
             if not self.__has_next_page(etree.HTML(html)):
                 break
             page_num += 1
@@ -502,9 +507,7 @@ class APIHandler(BaseHandler):
                     "datetime": inv.xpath("./tr[1]/td/table/tr[1]/th[1]/text()")[0][7:],
                     "type": inv.xpath("./tr[1]/td/table/tr[1]/th[3]/text()")[0],
                     "count": inv.xpath("./tr[2]/td/table/tr/td[3]/span/text()")[0],
-                    "amount": re.match(
-                        "[^\d\.]*([\d\.]*)",
-                        inv.xpath("./tr[1]/td/table/tr[1]/th[2]/span/text()")[0]).groups()[0],
+                    "amount": inv.xpath("./tr[1]/td/table/tr[1]/th[2]/span/text()")[0].replace(",","").replace("￥",""),
                     "dwurl": os.path.join(
                         "https://pss.txffp.com/",
                         inv.xpath(
