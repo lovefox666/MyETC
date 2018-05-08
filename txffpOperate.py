@@ -404,8 +404,10 @@ class APIHandler(BaseHandler):
                 # self.logger.info("开票成功（模拟）")
                 # 开票最终阶段
                 submit_html = self.api_inv_subapply(apply_id, id, user_type)
+                """
                 with open(os.path.join(BASE_DIR, "submit_html.html"), "w", encoding="utf-8") as f:
                     f.write(submit_html)
+                """
                 self.logger.info("%s %s 开票结果: %s" %
                              (car_num, month, submit_html.strip()))
             
@@ -506,7 +508,9 @@ class APIHandler(BaseHandler):
                     "datetime": inv.xpath("./tr[1]/td/table/tr[1]/th[1]/text()")[0][7:],
                     "type": inv.xpath("./tr[1]/td/table/tr[1]/th[3]/text()")[0],
                     "count": inv.xpath("./tr[2]/td/table/tr/td[3]/span/text()")[0],
-                    "amount": inv.xpath("./tr[1]/td/table/tr[1]/th[2]/span/text()")[0].replace(",","").replace("￥",""),
+                    "amount": re.findall(
+                        r"-?\d+\.?\d*",
+                        inv.xpath("./tr[1]/td/table/tr[1]/th[2]/span/text()")[0].replace(",",""))[0],
                     "dwurl": os.path.join(
                         "https://pss.txffp.com/",
                         inv.xpath(
