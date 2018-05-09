@@ -37,10 +37,15 @@ if userinput.upper() == "N":
     print("程序退出。谢谢使用。")
     sys.exit()
 
+#基础路径
 BASE_DIR = os.path.dirname(os.path.abspath("__file__"))
+#月份
 monthbeforeLast = myDatetimeUtil.getMonthbeforeLast() 
 lastMonth  = myDatetimeUtil.getLastMonth()
 currentMonth = myDatetimeUtil.getCurrentMonth()
+#发票下载路径
+download_dir = os.path.join(BASE_DIR,'download',lastMonth)
+
 #后续可考虑用数组的方法，传递数组：上上月，上月，当前月。
 # 上上月用于票根网查询开票信息，上月用于票根网查询开票信息和ETC结算记录，当前月用于票根网下载发票
 #months = [monthbeforeLast,lastMonth,currentMonth]
@@ -79,38 +84,42 @@ else:
 
 #3.登录票根网，获取开票信息
 #3.1获取下txffp的cookie
-Getcookies.getCookieTotxt('%pss.txffp.com','cookie.txt')
-event_handler = txffpOperate.APIHandler(txffpOperate.COOKIE, txffpOperate.HEADERS, req_sleep=5)
+
 userinput = input("请登录票根网（www.txffp.com）。完成后，请输入“Y”；跳过，请输入“N”：")
 if userinput.upper() == "Y":
-    
-    #3.2开票申请。应查询上月，并开票"""
-    print("开始申请%s开票，请耐心等待....." % (lastMonth))
-    event_handler.submit_apply_all(lastMonth)
-    #3.3开票申请。应查询上月，并开票"""
-    print("开始申请%s开票，请耐心等待....." % (monthbeforeLast))
-    event_handler.submit_apply_all(monthbeforeLast)
-elif userinput.upper() == "N":
-    print("跳过开票阶段。")
-else:
-    print("输入指令异常，程序退出。谢谢使用。")
-    sys.exit()
+    Getcookies.getCookieTotxt('%pss.txffp.com','cookie.txt')
+    event_handler = txffpOperate.APIHandler(txffpOperate.COOKIE, txffpOperate.HEADERS, req_sleep=5)
+    userinput = input("是否申请开票？确认，请输入“Y”；跳过请输入“N”：")
+    if userinput.upper() == "Y":
+        #3.2开票申请。应查询上月，并开票"""
+        print("开始申请%s开票，请耐心等待....." % (lastMonth))
+        event_handler.submit_apply_all(lastMonth)
+        #3.3开票申请。应查询上月，并开票"""
+        print("开始申请%s开票，请耐心等待....." % (monthbeforeLast))
+        event_handler.submit_apply_all(monthbeforeLast)
+    elif userinput.upper() == "N":
+        print("你已跳过开票阶段。")
+    else:
+        print("输入指令异常，程序退出。谢谢使用。")
+        sys.exit()
 
-#4.当前月下载当前月申请开出的发票，这些发票是4月结算的记录
-userinput = input("是否开始下载发票？确认请输入“Y”，跳过请输入“N”：")
-download_dir = os.path.join(BASE_DIR,'download',lastMonth)
-if userinput.upper() == "Y":
-    if not os.path.exists(download_dir):
-        os.makedirs(download_dir)
-    #print(download_dir)
-    event_handler.inv_download_all(currentMonth,download_dir)
-    #event_handler.inv_download_all(lastMonth,download_dir)
-    print("恭喜你，下载完成。")
-elif userinput.upper() == "N":
-    print("跳过下载程序部分。")
+    #4.当前月下载当前月申请开出的发票，这些发票是4月结算的记录
+    userinput = input("你是否开始下载发票？确认，请输入“Y”；跳过，请输入“N”：")
+    
+    if userinput.upper() == "Y":
+        if not os.path.exists(download_dir):
+            os.makedirs(download_dir)
+        #print(download_dir)
+        event_handler.inv_download_all(currentMonth,download_dir)
+        #event_handler.inv_download_all(lastMonth,download_dir)
+        print("恭喜你，下载完成。")
+    elif userinput.upper() == "N":
+        print("跳过下载程序部分。")
+    else:
+        print("输入指令异常，程序退出。谢谢使用。")
+        sys.exit()
 else:
-    print("输入指令异常，程序退出。谢谢使用。")
-    sys.exit()
+    print("你已跳过票根网操作部分。")
 
 #5.解压缩文件
 print("开始解压缩下载文件，请耐心等待......")
