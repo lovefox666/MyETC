@@ -138,7 +138,8 @@ for zipFile in zipFileList:
     myUtils.mergePdf(pdfList,newPDFFileName)
     print("解压缩/合并PDF完成。")
 #5.4.移除多余PDF
-#shutil.rmtree(os.path.join(download_dir,"temp"))
+print("开始移除临时文件夹。")
+shutil.rmtree(os.path.join(download_dir,"temp"))
 
 #5.5.移除已解压的压缩包
 print("开始移除已解压的压缩包。")
