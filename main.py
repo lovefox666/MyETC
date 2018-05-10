@@ -126,7 +126,7 @@ print("开始解压缩下载文件，请耐心等待......")
 #5.1.获取文件夹内的文件列表
 zipFileList = fnmatch.filter(os.listdir(download_dir), '*.zip')
 #5.2.获取压缩包文件名，读取压缩包内文件，如果还有压缩包则再解压缩，修改文件名
-pdfLists = []#待移除的pdf列表
+
 for zipFile in zipFileList:
     pdfList = []
     zipFileName = os.path.join(download_dir,zipFile)
@@ -137,9 +137,12 @@ for zipFile in zipFileList:
  
     myUtils.mergePdf(pdfList,newPDFFileName)
     print("解压缩/合并PDF完成。")
+
 #5.4.移除多余PDF
 print("开始移除临时文件夹。")
-shutil.rmtree(os.path.join(download_dir,"temp"))
+temp = os.path.join(download_dir,"temp")
+if os.path.exists(temp):
+    shutil.rmtree(temp)
 
 #5.5.移除已解压的压缩包
 print("开始移除已解压的压缩包。")

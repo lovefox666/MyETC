@@ -52,6 +52,7 @@ class Getcookies(object):
         for cookies_key,cookies_value in cookies.items():
             list_cookies.append(cookies_key + "=" + str(cookies_value))
         str_cookies = split_str.join(list_cookies)
+        
         #3.第三步，保存到文件
         with open(filename, 'w') as f:
             print(str_cookies, file = f)
@@ -68,6 +69,7 @@ class Getcookies(object):
             for name,encrypted_value in cu.execute(sql).fetchall():
                 cookie_list.append(name + "=" + win32crypt.CryptUnprotectData(encrypted_value)[1].decode())
             str_cookies = split_str.join(cookie_list)
+        print(str_cookies)
         with open(filename, 'w') as f:
             print(str_cookies, file = f)
             

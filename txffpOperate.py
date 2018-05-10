@@ -157,6 +157,7 @@ class BaseHandler(object):
 
         if response.status_code == 404:
             self.logger.error("得到了一个404响应，可能是cookie没有及时更新导致或者cookie过期等")
+            #return response.status_code
             sys.exit("结束程序")
 
         if response.status_code != 200:
