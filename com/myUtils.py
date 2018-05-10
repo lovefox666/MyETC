@@ -57,7 +57,7 @@ def mergePdf(inFileList, outFile, blankpage=1):
             pageObj = pdfReader.getPage(index)
             pdfFileWriter.addPage(pageObj)
             
-        if (i==0) and (numPages % 2 == 1):
+        if (i==0) and (numPages % 2 == 1) and (blankpage == 1):
             #print("发现通行记录为奇数页，增加一个空白页，便于一页两版的打印")
             pdfFileWriter.addBlankPage()
         
