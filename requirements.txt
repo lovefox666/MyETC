@@ -12,7 +12,7 @@ Pillow==5.1.0
 pylint==1.8.4
 PyPDF2==1.26.0
 pytesseract==0.2.0
-pywin32==223
+pywin32==301
 requests==2.18.4
 six==1.11.0
 urllib3==1.22
